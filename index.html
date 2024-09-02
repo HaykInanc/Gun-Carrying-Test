@@ -3,24 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="style/style.css">
-    <title>զենք կրելու իրավունք QUESTIONS</title>
+    <link rel="icon" type="image/x-icon" href="./media/logo.png">
+    <title>Թեստ: Զենք կրելու իրավունք</title>
 </head>
 <body>
+    <header>
+        <div class="logo">
+            <img src="./media/logo.png" alt="logo">
+        </div>
+    </header>
     <div class="container mt-5">
-        <div id="question-container" class="text-center">
-            <h2 id="question" class="mb-4"></h2>
-            <div id="answers" class="mb-4"></div>
-            <div id="result" class="d-none text-center">
-                <p id="result-message" class="mb-3"></p>
-                <button class="btn btn-primary" onclick="loadQuestion()">Հաջորդ հարց</button>
+        <div class="card-panel teal lighten-5">
+            <h4 class="center-align">Թեստ: Զենք կրելու իրավունք</h4>
+            <div id="questions-container" class="section">
+                <!-- Questions will be injected here -->
             </div>
+            <div class="center-align mt-4">
+                <button id="submit-button" class="btn waves-effect waves-light" onclick="checkResults()">Ստուգել արդյունքները</button>
+            </div>
+            <h4 class="result-message">
+
+            </h4>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="script/script.js"></script>
     <script src="script/questions.js"></script>
 </body>

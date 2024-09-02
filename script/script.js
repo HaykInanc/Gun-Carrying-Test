@@ -5,51 +5,82 @@ function shuffleArray(array) {
     }
 }
 
-function loadQuestion() {
-    const randomIndex = Math.floor(Math.random() * QUESTIONS.length);
-    const question = QUESTIONS[randomIndex];
+function loadQuestions() {
+    const shuffledQuestions = QUESTIONS.sort(() => 0.5 - Math.random()).slice(0, 10);
+    const container = document.getElementById('questions-container');
+    container.innerHTML = '';
 
-    document.getElementById('question').textContent = question.question;
-    const answersContainer = document.getElementById('answers');
-    answersContainer.innerHTML = '';
+    shuffledQuestions.forEach((question, index) => {
+        const shuffledAnswers = [...question.answers];
+        shuffleArray(shuffledAnswers); // Перемешиваем ответы
 
-    // Save the index of the correct answer
-    const correctAnswer = question.answers[0];
-    const shuffledAnswers = [...question.answers];
-    shuffleArray(shuffledAnswers);
+        const questionElement = document.createElement('div');
+        questionElement.className = 'question-block';
+        questionElement.innerHTML = `
+            <h5>${index + 1}. ${question.question}</h5>
+            ${shuffledAnswers.map((answer, i) => `
+                <label class="answer-label">
+                    <input name="question${index}" type="radio" value="${answer}" />
+                    <p>${answer}</p>
+                </label>
+            `).join('')}
+        `;
+        container.appendChild(questionElement);
+    });
+}
 
-    // Map each shuffled answer to its original index
-    const answerMap = new Map(shuffledAnswers.map((answer, index) => [answer, index]));
 
-    // Display the shuffled answers
-    shuffledAnswers.forEach((answer, index) => {
-        const button = document.createElement('button');
-        button.textContent = answer;
-        button.className = 'btn btn-outline-primary answer-button';
-        button.onclick = () => checkAnswer(index, button, answerMap, correctAnswer);
-        answersContainer.appendChild(button);
+
+function disableInputs() {
+    const inputs = document.querySelectorAll('input[type="radio"]');
+    inputs.forEach(input => {
+        input.disabled = true;
+    });
+}
+
+
+
+function checkResults() {
+    const questions = document.querySelectorAll('.question-block');
+    let correctCount = 0;
+
+    questions.forEach((question, index) => {
+        const selectedAnswer = question.querySelector('input[type="radio"]:checked');
+        const correctAnswer = QUESTIONS[index].answers[0]; // Предполагается, что правильный ответ первый в массиве
+
+        if (selectedAnswer) {
+            const selectedLabel = selectedAnswer.closest('.answer-label');
+            
+            if (selectedAnswer.value === correctAnswer) {
+                selectedLabel.classList.add('correct');
+                correctCount++;
+            } else {
+                selectedLabel.classList.add('incorrect');
+                // Отметить правильный ответ
+                question.querySelectorAll('.answer-label').forEach(label => {
+                    if (label.querySelector('input[type="radio"]').value === correctAnswer) {
+                        label.classList.add('correct');
+                    }
+                });
+            }
+        } else {
+            // Если пользователь не выбрал ответ, отметим правильный
+            question.querySelectorAll('.answer-label').forEach(label => {
+                if (label.querySelector('input[type="radio"]').value === correctAnswer) {
+                    label.classList.add('correct');
+                }
+            });
+        }
     });
 
-    document.getElementById('result').classList.add('d-none');
+    const resultMessage = correctCount >= 8 
+    ? `Շնորհավորում ենք! Դուք անցաք թեստը՝ ${correctCount} ճիշտ պատասխանով 10-ից։`
+    : `Ցավոք, դուք չանցաք։ Դուք ստացաք ${correctCount} ճիշտ պատասխան 10-ից։ Փորձեք կրկին։`;
+
+    disableInputs();
+
+    document.querySelector('.result-message').innerHTML = resultMessage;
 }
 
-function checkAnswer(selectedIndex, selectedButton, answerMap, correctAnswer) {
-    const question = QUESTIONS.find(q => q.question === document.getElementById('question').textContent);
-
-    const correctAnswerIndex = answerMap.get(correctAnswer);
-
-    const answerButtons = document.querySelectorAll('.answer-button');
-    answerButtons.forEach(button => button.classList.remove('selected'));
-    selectedButton.classList.add('selected');
-
-    answerButtons[correctAnswerIndex].classList.add('correct');
-
-    if (selectedIndex === correctAnswerIndex) {
-        document.getElementById('result-message').textContent = 'Ճիշտ պատասխան!';
-    } else {
-        document.getElementById('result-message').textContent = 'Սխալ պատասխան! Ճիշտ պատասխան՝: ' + correctAnswer;
-    }
-    document.getElementById('result').classList.remove('d-none');
-}
-
-window.onload = loadQuestion;
+// Запуск функции при загрузке страницы
+window.onload = loadQuestions;

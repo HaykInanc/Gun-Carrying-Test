@@ -1,29 +1,72 @@
+header{
+    background-color: #33691e;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 15px;
+    height: 50px;
+    margin: 45px 0;
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+.logo{
+    background-color: white;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+}
+
+header img{
+    width: 100%;
+    height: 100%;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f4f7;
+    padding-top: 20px;
+    background-color: #5b874b;
 }
 
-.answer-button {
-    display: block;
-    margin: 5px auto;
-    padding: 10px 20px;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
+.card-panel {
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.answer-label {
+    display: flex;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
-.answer-button:hover {
-    background-color: #ddd;
+.answer-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
-body .answer-button.correct {
-    background-color: #28a745; /* Зеленый для правильного ответа */
+.answer-label input[type="radio"] + p {
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    display: inline-block;
+    width: 100%;
+    transition: background-color 0.3s, border-color 0.3s;
+    margin: 5px 0;
+}
+
+.answer-label input[type="radio"]:checked + p {
+    outline: 4px solid #039be5;
+}
+
+ #questions-container .answer-label.correct p {
+    background-color: #43a047; /* Зеленый для правильного ответа */
     color: white;
-    border-color: #28a745;
 }
 
-.answer-button.selected {
-    background-color: #dc3545; /* Красный для выбранного ответа */
+#questions-container .answer-label.incorrect p {
+    background-color: #e53935; /* Красный для неправильного ответа */
     color: white;
-    border-color: #dc3545;
 }
